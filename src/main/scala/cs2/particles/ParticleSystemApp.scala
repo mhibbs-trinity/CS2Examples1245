@@ -5,6 +5,7 @@ import scalafx.scene.Scene
 import scalafx.scene.canvas.Canvas
 import cs2.util.Vec2
 import scalafx.animation.AnimationTimer
+import scalafx.scene.paint.Color
 
 object ParticleSystemApp extends JFXApp {
     stage = new JFXApp.PrimaryStage {
@@ -14,12 +15,16 @@ object ParticleSystemApp extends JFXApp {
             content = canvas
             val g = canvas.graphicsContext2D
 
-            val p = new Particle(new Vec2(300,100), new Vec2(0.2,0.4))
-            p.display(g)
+            val ps = new ParticleSystem(new Vec2(300,100))
+            val gravity = new Vec2(0,0.2)
 
             val timer = AnimationTimer(t => {
-                p.display(g)
-                p.timeStep()
+                g.setFill(Color.White)
+                g.fillRect(0,0, 600,600)
+                ps.display(g)
+                ps.timeStep()
+                ps.addParticle()
+                ps.applyForce(gravity)
             })
             timer.start
 
