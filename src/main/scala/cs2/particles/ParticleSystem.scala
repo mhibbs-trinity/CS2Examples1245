@@ -7,18 +7,20 @@ class ParticleSystem(val origin:Vec2) {
     var particles:List[Particle] = Nil
 
     def addParticle():Unit = {
+        particles ::= new RainbowParticle(Vec2(origin), new Vec2(math.random()*4-2, math.random()*4-2))
+        /*
         if(math.random() < 0.5) {
-            particles ::= new Particle(Vec2(origin), new Vec2(math.random()*4-2, math.random()*4-2))
+            particles ::= new RoundParticle(Vec2(origin), new Vec2(math.random()*4-2, math.random()*4-2))
         } else {
             particles ::= new SquareParticle(Vec2(origin), new Vec2(math.random()*4-2, math.random()*4-2))
-        }
+        }*/
     }
 
     def display(g:GraphicsContext):Unit = {
         for(p <- particles) {
             p.display(g)
         }
-        println(particles.length)
+        //println(particles.length)
     }
     def timeStep():Unit = {
         particles.foreach((p:Particle) => p.timeStep())
