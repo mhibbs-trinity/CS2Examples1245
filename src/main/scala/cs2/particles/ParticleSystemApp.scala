@@ -10,7 +10,7 @@ import scalafx.scene.input.MouseEvent
 import scalafx.scene.input.KeyEvent
 import scalafx.scene.input.KeyCode
 
-object ParticleSystemApp extends JFXApp {
+object ParticleSystemApp extends JFXApp with Rainbowness {
     stage = new JFXApp.PrimaryStage {
         title = "Particles!"
         scene = new Scene(600,600) {
@@ -33,7 +33,7 @@ object ParticleSystemApp extends JFXApp {
             }
 
             val timer = AnimationTimer(t => {
-                g.setFill(Color.White)
+                g.setFill(stepColor())
                 g.fillRect(0,0, 600,600)
                 ps.foreach(_.display(g))
                 ps.foreach(_.timeStep())
