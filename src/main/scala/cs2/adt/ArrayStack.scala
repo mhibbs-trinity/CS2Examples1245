@@ -16,10 +16,16 @@ class ArrayStack[A : Manifest] extends Stack[A] {
         len += 1
     }
     def pop():A = {
+        if(isEmpty) {
+            throw new java.util.EmptyStackException
+        }
         len -= 1
         arr(len)
     }
     def peek():A = {
+        if(isEmpty) {
+            throw new java.util.EmptyStackException
+        }
         arr(len - 1)
     }
     def isEmpty():Boolean = {
