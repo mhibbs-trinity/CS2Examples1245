@@ -4,10 +4,10 @@ import org.junit._
 import org.junit.Assert._
 
 class SeqTester {
-    var s:Seq[Int] = new LinkedSeq[Int]()
+    var s:Seq[Int] = Seq[Int]()
 
     @Before def init():Unit = {
-        s = new LinkedSeq[Int]()
+        s = Seq[Int]()
     }
 
     @Test def checkInsertAndGet():Unit = {

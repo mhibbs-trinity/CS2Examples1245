@@ -13,10 +13,13 @@ abstract class Seq[A] extends Iterable[A] {
     def +:= (elem:A):Unit = prepend(elem)
     def append(elem:A):Unit = insert(length, elem)
     def += (elem:A):Unit = append(elem)
+
+    def apply(idx:Int):A = get(idx)
+    def update(idx:Int, elem:A) = set(idx, elem)
 }
 
 object Seq {
-    def apply[A]():Seq[A] = new LinkedSeq[A]()
+    def apply[A : Manifest]():Seq[A] = new DoubleLinkedSeq[A]()
 
     def main(args:Array[String]):Unit = {
         var seq = Seq[Int]()
@@ -24,8 +27,9 @@ object Seq {
 
         //O(n^2)
         for(idx <- 0 until seq.length) {
-            println(seq.get(idx))
+            println(seq(idx))
         }
+        seq(2) = 42 //seq.update(2, 42)
 
         //O(n)
         println(seq)
