@@ -4,7 +4,17 @@ class LinkedPriorityQueue[A <% Ordered[A]] extends PriorityQueue[A] {
     private class Node(var data:A, var next:Node)
     private var head:Node = null
 
-    def add(elem:A):Unit = { }
+    def add(elem:A):Unit = {
+        if(head == null || elem > head.data) {
+            head = new Node(elem, head)
+        } else {
+            var rover = head
+            while(rover.next != null && rover.next.data > elem) {
+                rover = rover.next
+            }
+            rover.next = new Node(elem, rover.next)
+        }
+    }
     def get():A = {
         val ret = head.data
         head = head.next
