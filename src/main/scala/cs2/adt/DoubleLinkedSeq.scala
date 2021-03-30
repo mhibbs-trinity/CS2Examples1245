@@ -42,8 +42,8 @@ class DoubleLinkedSeq[A: Manifest] extends Seq[A] {
   end.next = end
   private var len: Int = 0
 
-  def get(idx: Int): A = {
-    val rover = end.next.getNode(idx)
+  def get(myIdx: Int): A = {
+    val rover = end.next.getNode(myIdx)
     rover.data
   }
   def set(idx: Int, elem: A): Unit = {
