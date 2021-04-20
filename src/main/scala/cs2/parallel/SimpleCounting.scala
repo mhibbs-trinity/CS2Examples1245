@@ -57,12 +57,17 @@ object SimpleCounting {
     name
   }
 
+  class Lock
+
   def countToABillion():Unit = {
+    val lock = new Lock
     var ctr = 0
     val threads:Array[Thread] = Array.fill(10)(new Thread {
       override def run():Unit = {
         for(i <- 1 to 1000000000/10) {
-          ctr += 1
+          lock.synchronized({
+            ctr += 1
+          })
         }
       }
     })
@@ -72,10 +77,35 @@ object SimpleCounting {
     println(ctr)
   }
 
+  import java.util.concurrent._
+  def countToABillionWithExecutor():Unit = {
+    val service = Executors.newCachedThreadPool()
+    service.submit(new Runnable {
+      override def run():Unit = {
+        println("Hello!")
+      }
+    })
+
+    val futures:Array[Future[Int]] = Array.fill(10)(service.submit(new Callable[Int] {
+      override def call():Int = {
+        var localCtr = 0
+        for(i <- 1 to 1000000000/10) {
+          localCtr += 1
+        }
+        localCtr
+      }
+    }))
+    val res:Array[Int] = futures.map(_.get)
+    println("The future is " + res.sum)
+
+    service.shutdown()
+  }
+
   def main(args:Array[String]):Unit = {
     //println("Hello, " + betterCountDownGetName())
-    for(i <- 1 to 20) {
+    /*for(i <- 1 to 20) {
       countToABillion()
-    }
+    }*/
+    countToABillionWithExecutor()
   }
 }
