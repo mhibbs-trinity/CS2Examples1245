@@ -24,16 +24,44 @@ object FactorialRuntimes {
   def factCollect(n:BigInt):BigInt = {
     (BigInt(1) to n).reduce(_*_)
   }
+  def factParFor(n:BigInt):BigInt = {
+    var product:BigInt = 1
+    for(x <- (BigInt(1) to n).par) {
+      product *= x
+    }
+    product
+  }
+  def factParCollect(n:BigInt):BigInt = {
+    (BigInt(1) to n).par.reduce(_*_)
+  }
 
+  import java.util.concurrent._
+  def factExecutor(n:BigInt, k:Int):BigInt = {
+    val service = Executors.newCachedThreadPool()
+    val futures:Array[Future[BigInt]] = Array.tabulate(k)((idx:Int) => {
+      service.submit(new Callable[BigInt] {
+        override def call():BigInt = {
+          (BigInt(idx+1) to n by k).product
+        }
+      })
+    })
+    val res = futures.map(_.get).product
+    service.shutdown()
+    res
+  }
 
   def main(args:Array[String]):Unit = {
-    val num = 5000
+    val num = 500000
     val logger = new TimeLogger
-    /*
+    
     logger.reset()
-    factRecur(num)
+    //factRecur(num)
     logger.logTime()
-    */
+
+    logger.reset()
+    //factRecur(num)
+    logger.logTime()
+    /*
     logger.reset()
     factFor(num)
     logger.logTime()
@@ -41,6 +69,22 @@ object FactorialRuntimes {
     logger.reset()
     factCollect(num)
     logger.logTime()
+    */
+
+    logger.reset()
+    println(factParFor(num))
+    logger.logTime()
+
+    logger.reset()
+    println(factParCollect(num))
+    logger.logTime()
+
+    /*
+    for(i <- 50 to 60) {
+      logger.reset()
+      factExecutor(num, i)
+      logger.logTime()
+    }*/
   }
 }
 
