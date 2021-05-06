@@ -24,5 +24,4 @@ libraryDependencies ++= javaFXModules.map( m=>
   "org.openjfx" % s"javafx-$m" % "11" classifier osName
 )
 
-
-//mainClass in (Compile, packageBin) := Some("cs2.net.ChatProgram")
+mainClass in (Compile, packageBin) := Some("cs2.net.ChatProgram")
